@@ -1,0 +1,75 @@
+
+
+sum notes 
+1- sequense will start from 1 , therefore DRONE1 will be 1 and DRONE2 will be 2 , 
+  so please consider the correct drone id while loading the medication
+2- project will create new medication and reference it to the Drone2
+  but if the same medication allready founded before (checking by name) will reference to the Drone2 wihtout creating anther one 
+
+
+
+Register Drone
+
+LOADING Drone (DRONE1)
+{
+  "battaryCapacity": 95,
+  "droneModel": {
+    "droneModelCaption": "LIGHTWEIGHT",
+    "droneModelId": 1,
+    "droneModelTitle": "LIGHTWEIGHT"
+  },
+  "droneState": {
+    "droneModelCaption": "LOADING",
+    "droneModelId": 2,
+    "droneModelTitle": "LOADING"
+  },
+  "serialNumber": "DRONE1",
+  "weightLimit": 450
+}
+
+IDLE Drone  (DRONE2)
+
+{
+  "battaryCapacity": 100,
+  "droneModel": {
+    "droneModelCaption": "LIGHTWEIGHT",
+    "droneModelId": 1,
+    "droneModelTitle": "LIGHTWEIGHT"
+  },
+  "droneState": {
+    "droneModelCaption": "IDLE",
+    "droneModelId": 1,
+    "droneModelTitle": "IDLE"
+  },
+  "serialNumber": "DRONE2",
+  "weightLimit": 500
+}
+
+
+ Load Medication for given drone (DRONE2)  and change the drone state to be loading 
+
+{
+  "droneId": 2,
+  "battaryCapacity": 100,
+  "droneModel": {
+    "droneModelCaption": "LIGHTWEIGHT",
+    "droneModelId": 1,
+    "droneModelTitle": "LIGHTWEIGHT"
+  },
+   "droneState": {
+    "droneModelCaption": "LOADING",
+    "droneModelId": 2,
+    "droneModelTitle": "LOADING"
+  },
+  "serialNumber": "DRONE2",
+  "weightLimit": 500,
+  "medicationList": [
+    {
+      
+      "medicationName": "MEDICATION_1",
+      "weight": 100,
+      "code": "AAACODE",
+      "image": "/Folder1/Subfolder"
+    }
+  ]
+}

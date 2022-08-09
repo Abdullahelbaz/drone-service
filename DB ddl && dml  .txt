@@ -1,0 +1,165 @@
+
+CREATE DATABASE CREATE DATABASE dbname;
+
+-- rollback ddl
+DROP TABLE drone_medication;
+DROP TABLE medication;
+DROP TABLE drone;
+DROP TABLE drone_model;
+DROP TABLE drone_state;
+
+
+
+-- sequence ddl
+CREATE SEQUENCE drone_medication_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 9223372036854775807
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+CREATE SEQUENCE drone_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 9223372036854775807
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+CREATE SEQUENCE medication_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 9223372036854775807
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+CREATE SEQUENCE drone_transaction_his_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 9223372036854775807
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+--tables ddl
+
+CREATE TABLE drone_model (
+	drone_model_id smallint NOT NULL,
+	drone_model_caption varchar(255) NOT NULL,
+	drone_model_title varchar(255) NOT NULL,
+	CONSTRAINT drone_model_pkey PRIMARY KEY (drone_model_id)
+);
+
+CREATE TABLE drone_state (
+	drone_state_id smallint NOT NULL,
+	drone_state_caption varchar(255) NOT NULL,
+	drone_state_title varchar(255) NOT NULL,
+	CONSTRAINT drone_state_pkey PRIMARY KEY (drone_state_id)
+);
+
+
+CREATE TABLE drone (
+	drone_id int8 NOT NULL ,-- DEFAULT nextval('drone_id_seq'),
+	serial_number varchar(100) NOT NULL,
+	drone_model_id smallint NOT NULL, 
+	weight_limit  smallint NOT NULL,
+	battary_capacity smallint NOT NULL,
+	drone_state_id smallint NOT NULL,  
+	CONSTRAINT drone_pkey PRIMARY KEY (drone_id),
+	CONSTRAINT drone_model_id_fk FOREIGN KEY (drone_model_id) REFERENCES drone_model(drone_model_id),
+	CONSTRAINT drone_state_id_fk FOREIGN KEY (drone_state_id) REFERENCES drone_state(drone_state_id)
+);
+
+CREATE TABLE medication (
+	medication_id int8 NOT null ,-- DEFAULT nextval('medication_id_seq'),
+	medication_name varchar(255) NOT NULL,
+	weight  smallint NOT NULL,
+	code varchar(255) NOT NULL,
+	image varchar(4000) NOT NULL,
+	CONSTRAINT medication_pkey PRIMARY KEY (medication_id)
+);
+
+
+
+CREATE TABLE drone_medication (
+	drone_medication_id int8 NOT null DEFAULT nextval('drone_medication_id_seq'),
+	drone_id bigserial NOT NULL,
+	medication_id bigserial NOT NULL,
+	CONSTRAINT drone_medication_pkey PRIMARY KEY (drone_medication_id),
+	CONSTRAINT drone_medication_drone_id_fk FOREIGN KEY (drone_id) REFERENCES drone(drone_id),
+	CONSTRAINT drone_medication_med_id_fk FOREIGN KEY (medication_id) REFERENCES medication(medication_id)
+);
+
+CREATE TABLE drone_tranasction_type (
+	transaction_type_id smallint NOT NULL,
+	transaction_type_name varchar(255) NOT NULL,
+	CONSTRAINT transaction_type_pkey PRIMARY KEY (transaction_type_id)
+);
+
+
+CREATE TABLE drone_transaction_history(
+
+	drone_transaction_id bigserial  NOT NULL,
+	transaction_date TIMESTAMP  ,
+	transaction_type_id smallint NOT NULL,
+    request_details varchar(2048 )  ,
+    drone_details varchar(1024 )  ,
+  CONSTRAINT drone_transaction_history_pkey PRIMARY KEY (drone_transaction_id) ,
+  CONSTRAINT trans_his_type_fk FOREIGN KEY (transaction_type_id) REFERENCES drone_tranasction_type (transaction_type_id)
+
+);
+      
+
+
+
+ALTER TABLE drone ADD CONSTRAINT drone_serial_number UNIQUE (serial_number);
+
+CREATE INDEX index_drone_serial_number ON drone (serial_number);
+
+
+
+
+
+
+
+ 
+
+//rollback dml
+delete from  drone ;
+delete from  medication ;
+delete from  drone_model ;
+delete from  drone_state ;
+
+
+
+--dml
+INSERT INTO drone_state (drone_state_id, drone_state_caption, drone_state_title) VALUES(1, 'IDLE', 'IDLE');
+INSERT INTO drone_state (drone_state_id, drone_state_caption, drone_state_title) VALUES(2, 'LOADING', 'LOADING');
+INSERT INTO drone_state (drone_state_id, drone_state_caption, drone_state_title) VALUES(3, 'LOADED', 'LOADED');
+INSERT INTO drone_state (drone_state_id, drone_state_caption, drone_state_title) VALUES(4, 'DELIVERING', 'DELIVERING');
+INSERT INTO drone_state (drone_state_id, drone_state_caption, drone_state_title) VALUES(5, 'DELIVERED', 'DELIVERED');
+INSERT INTO drone_state (drone_state_id, drone_state_caption, drone_state_title) VALUES(6, 'RETURNING', 'RETURNING');
+
+INSERT INTO drone_model (drone_model_id, drone_model_caption, drone_model_title) VALUES(1, 'LIGHTWEIGHT', 'LIGHTWEIGHT');
+INSERT INTO drone_model (drone_model_id, drone_model_caption, drone_model_title) VALUES(2, 'MEDDLEWEIGHT', 'MEDDLEWEIGHT');
+INSERT INTO drone_model (drone_model_id, drone_model_caption, drone_model_title) VALUES(3, 'CRUISEWEIGHT', 'CRUISEWEIGHT');
+INSERT INTO drone_model (drone_model_id, drone_model_caption, drone_model_title) VALUES(4, 'HEAVYWEIGHT', 'HEAVYWEIGHT');
+
+INSERT INTO drone_tranasction_type (transaction_type_id, transaction_type_name) VALUES(1, 'TRANSACTION_TYPE_FINE_BY_GIVEN_DRONE');
+INSERT INTO drone_tranasction_type (transaction_type_id, transaction_type_name) VALUES(2, 'TRANSACTION_TYPE_REGISTER_DRONE');
+INSERT INTO drone_tranasction_type (transaction_type_id, transaction_type_name) VALUES(3, 'TRANSACTION_TYPE_DRONES_AVAILABLE');
+INSERT INTO drone_tranasction_type (transaction_type_id, transaction_type_name) VALUES(4, 'TRANSACTION_TYPE_LOAD_MEDICATION');
+INSERT INTO drone_tranasction_type (transaction_type_id, transaction_type_name) VALUES(5, 'TRANSACTION_TYPE_CHECK_BATTARY_CAPACITY');
+
+
+
+
+
+-- will be availbale after post the request json but it is dumy data for retrieving
+
+INSERT INTO medication ( medication_name, weight, code, image) VALUES( 'A_MEDICATION', 300, 'AAABBB', '/Folder1/Subfolder/');
+
+INSERT into drone ( serial_number, drone_model_id, weight_limit, battary_capacity, drone_state_id) VALUES( 'abc', 1, 500, 100, 1);
+
