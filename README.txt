@@ -61,14 +61,15 @@ drone_transaction_history history for saving any transactions  which succeeded o
      file name : DB ddl && dml  .txt
 
 -- for build the package 
-1- clean the package 
-2- build mvn by 'clean package'
-3- the package will build and the jar in target directory
-4- the package has impeded tomcat server 
-5- run the jar by below command
+1- bound and add JDK 8 in build path
+2- clean the package 
+3- build mvn by 'clean package'
+4- the package will build and the jar in target directory
+5- the package has impeded tomcat server 
+6- run the jar by below command
      nohup java -jar Drone-Service-1.0.jar 
 or use any build tool like STS
-6-you can use swagger by below link and use the JSON requests
+7-you can use swagger by below link and use the JSON requests
 	JSON request file name : Requests JSON.txt
    	Swagger Link  : http://localhost:8052/swagger-ui.html#/
 
