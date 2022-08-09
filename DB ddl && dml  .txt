@@ -1,5 +1,7 @@
 
-CREATE DATABASE CREATE DATABASE dbname;
+--CREATE DATABASE 
+   
+   CREATE DATABASE dbname;
 
 -- rollback ddl
 DROP TABLE drone_medication;
