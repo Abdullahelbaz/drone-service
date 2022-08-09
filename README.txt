@@ -62,7 +62,7 @@ drone_transaction_history history for saving any transactions  which succeeded o
 
 -- for build the package 
 1- bound and add JDK 8 in build path
-2- clean the package 
+2- update maven then clean the package then install maven
 3- build mvn by 'clean package'
 4- the package will build and the jar in target directory
 5- the package has impeded tomcat server 
